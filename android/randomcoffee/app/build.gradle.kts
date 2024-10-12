@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -85,4 +86,14 @@ dependencies {
     // compose destinations
     implementation(libs.compose.navigation.core)
     ksp(libs.compose.navigation.ksp)
+
+    // animated bottom bar
+    implementation(libs.animated.navigation.bar)
+
+    // Yet Another Kotlin COmpose Validation
+    implementation(libs.yakov)
+
+    // circuit
+    implementation(libs.circuit.foundation)
+    implementation(libs.slack.circuitx.android)
 }
