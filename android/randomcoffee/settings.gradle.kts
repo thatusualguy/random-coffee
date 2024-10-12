@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "RandomCoffee"
 include(":app")
+include(":api")
