@@ -199,30 +199,31 @@ paths:
         - meet
       security:
         - bearerAuth: [ ]
-      parameter:
-      - name: userId
-        in: path
-        required: true
-        schema:
-          type: integer
-      - name: start_date
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date
-      - name: end_date
-        in: query
-        required: false
-        schema:
-          type: string
-          format: date
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: start_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
       responses:
         '200':
           description: Success
           content:
             application/json:
-              $ref: '#/components/schemas/HistoryMeets'
+              schema:
+                $ref: '#/components/schemas/HistoryMeets'
 
   /meet/future/{userId}:
     get:
@@ -241,7 +242,8 @@ paths:
           description: Success
           content:
             application/json:
-              $ref: '#/components/schemas/FutureMeets'
+              schema:
+                $ref: '#/components/schemas/FutureMeets'
 
 
   /meet/approve/{userId}/{meetId}:
