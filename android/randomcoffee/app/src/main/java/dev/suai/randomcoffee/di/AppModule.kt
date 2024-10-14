@@ -8,30 +8,31 @@ import dagger.hilt.components.SingletonComponent
 import dev.suai.randomcoffee.data.AuthApiRepository
 import dev.suai.randomcoffee.domain.AuthRepository
 import dev.suai.randomcoffee.schema.api.AuthApi
-import dev.suai.randomcoffee.schema.api.InterestsApi
-import dev.suai.randomcoffee.schema.api.UserApi
 import org.openapitools.client.infrastructure.ApiClient
 import javax.inject.Singleton
+
 
 @Suppress("unused")
 @Module
 @InstallIn(SingletonComponent::class)
-interface AppModule {
+abstract class AppModule {
 
     @Binds
     @Singleton
-    fun bindAuthRepository(impl: AuthApiRepository): AuthRepository
+    abstract fun bindAuthRepository(impl: AuthApiRepository): AuthRepository
 
-    @Provides
-    @Singleton
-    fun provideAuthApi(api: ApiClient): AuthApi {
-        return api.createService(AuthApi::class.java)
-    }
+    companion object {
+        @Provides
+        @Singleton
+        fun provideAuthApi(api: ApiClient): AuthApi {
+            return api.createService(AuthApi::class.java)
+        }
 
-    @Provides
-    @Singleton
-    fun provideApi(retrofit: ApiClient): ApiClient {
-        System.setProperty(ApiClient.defaultBasePath, "example.com")
-        return ApiClient()
+        @Provides
+        @Singleton
+        fun provideApi(retrofit: ApiClient): ApiClient {
+            System.setProperty(ApiClient.defaultBasePath, "example.com")
+            return ApiClient()
+        }
     }
 }

@@ -13,22 +13,24 @@ import javax.inject.Singleton
 @Suppress("unused")
 @Module
 @InstallIn(SingletonComponent::class)
-interface CircuitModule {
+abstract class CircuitModule {
     @Multibinds
-    fun presenterFactories(): Set<Presenter.Factory>
+    abstract fun presenterFactories(): Set<Presenter.Factory>
 
     @Multibinds
-    fun viewFactories(): Set<Ui.Factory>
+    abstract fun viewFactories(): Set<Ui.Factory>
 
-    @Singleton
-    @Provides
-    fun provideCircuit(
-        presenterFactories: @JvmSuppressWildcards Set<Presenter.Factory>,
-        uiFactories: @JvmSuppressWildcards Set<Ui.Factory>,
-    ): Circuit {
-        return Circuit.Builder()
-            .addPresenterFactories(presenterFactories)
-            .addUiFactories(uiFactories)
-            .build()
+    companion object {
+        @Singleton
+        @Provides
+        fun provideCircuit(
+            presenterFactories: @JvmSuppressWildcards Set<Presenter.Factory>,
+            uiFactories: @JvmSuppressWildcards Set<Ui.Factory>,
+        ): Circuit {
+            return Circuit.Builder()
+                .addPresenterFactories(presenterFactories)
+                .addUiFactories(uiFactories)
+                .build()
+        }
     }
 }
