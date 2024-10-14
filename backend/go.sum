@@ -1,5 +1,7 @@
 github.com/BurntSushi/toml v1.2.1 h1:9F2/+DoOYIOksmaJFPw1tGFy1eDnIJXg+UHjuD8lTak=
 github.com/BurntSushi/toml v1.2.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
+github.com/Qquiqlerr/randomCoffeeProtos v0.0.0-20241014091752-cf8225129b9c h1:EvVwImd/Hoc3T6binam9ioB1FXNXLFzhSMmquIeP8Ws=
+github.com/Qquiqlerr/randomCoffeeProtos v0.0.0-20241014091752-cf8225129b9c/go.mod h1:XAhS53JjRS+o+H+qFZcLLZ9I0J94hTS3l0VT/1j/2mU=
 github.com/dotenv-org/godotenvvault v0.6.0 h1:e6rUPELZaPmf6SgxxdB3nACG9VQAE8+omrSSZm0QUgk=
 github.com/dotenv-org/godotenvvault v0.6.0/go.mod h1:q/635WfmO04uUBVwrDWchRPOvPWaplWC6Udm+illcS4=
 github.com/golang-jwt/jwt/v5 v5.2.1 h1:OuVbFODueb089Lh128TAcimifWaLhJwVflnrgM17wHk=

@@ -1,13 +1,13 @@
 package handlers
 
 import (
-	"RandomCoffee/api/proto/auth"
-	"RandomCoffee/api/proto/user"
 	"RandomCoffee/auth/internal/config"
 	"RandomCoffee/auth/internal/jwt"
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Qquiqlerr/randomCoffeeProtos/auth"
+	"github.com/Qquiqlerr/randomCoffeeProtos/user"
 	"golang.org/x/crypto/bcrypt"
 )
 

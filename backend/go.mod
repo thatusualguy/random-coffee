@@ -13,6 +13,7 @@ require (
 
 require (
 	github.com/BurntSushi/toml v1.2.1 // indirect
+	github.com/Qquiqlerr/randomCoffeeProtos v0.0.0-20241014091752-cf8225129b9c // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
 	golang.org/x/net v0.28.0 // indirect
 	golang.org/x/sys v0.26.0 // indirect
