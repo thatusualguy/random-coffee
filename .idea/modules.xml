@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/random-coffee.iml" filepath="$PROJECT_DIR$/.idea/random-coffee.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/RandomCoffee.iml" filepath="$PROJECT_DIR$/.idea/RandomCoffee.iml" />
+>>>>>>> RandomCoffee/main
     </modules>
   </component>
 </project>
