@@ -1,0 +1,5 @@
+access_token_ttl: 1h
+refresh_token_ttl: 168h
+grpc:
+  port: ":8083"
+  timeout: 10h
