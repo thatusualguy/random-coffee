@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.hilt)
     id("kotlin-parcelize")
     alias(libs.plugins.kotlin.compose)
+    id("org.openapi.generator")
 }
 
 android {
@@ -51,7 +52,46 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    sourceSets {
+        getByName("main") {
+            kotlin {
+                srcDir("${buildDir.path}/openapi")
+            }
+        }
+    }
+
 }
+
+openApiValidate {
+    val path = File(File(projectDir.parent).parent).parent
+    inputSpec = "$path\\RandomCoffee.openapi.yaml".replace("\\", "/")
+}
+
+openApiGenerate {
+    generatorName = "kotlin"
+    validateSpec = false
+    val path = File(File(projectDir.parent).parent).parent
+    inputSpec = "$path\\RandomCoffee.openapi.yaml".replace("\\", "/")
+//    inputSpec = "${projectDir.path}/RandomCoffee.openapi.yaml".replace("\\","/")
+
+    outputDir = "${buildDir.path}/openapi".replace("\\", "/")
+
+    additionalProperties = mapOf(
+        "library" to "jvm-retrofit2",
+        "serializationLibrary" to "kotlinx_serialization",
+        "useCoroutines" to "true"
+    )
+
+    apiPackage = "dev.suai.randomcoffee.schema.api"
+    modelPackage = "dev.suai.randomcoffee.schema.model"
+}
+
+tasks.preBuild {
+    dependsOn(tasks.openApiGenerate)
+}
+
+
 
 dependencies {
     implementation(libs.androidx.core.ktx)
@@ -69,6 +109,15 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // api
+    implementation(libs.moshi.kotlin)
+    implementation(libs.moshi.adapters)
+    implementation(libs.logging.interceptor)
+    implementation(libs.retrofit)
+    implementation(libs.converter.moshi)
+    implementation(libs.converter.scalars)
+    implementation(libs.kotlinx.serialization.json)
 
     //ViewModel
     implementation(libs.androidx.lifecycle.extensions)
