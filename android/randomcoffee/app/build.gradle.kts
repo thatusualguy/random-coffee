@@ -73,6 +73,8 @@ openApiGenerate {
     validateSpec = false
     val path = File(File(projectDir.parent).parent).parent
     inputSpec = "$path\\RandomCoffee.openapi.yaml".replace("\\", "/")
+    ignoreFileOverride = "${projectDir.path}/openapi-generator-ignore"
+
 //    inputSpec = "${projectDir.path}/RandomCoffee.openapi.yaml".replace("\\","/")
 
     outputDir = "${buildDir.path}/openapi".replace("\\", "/")
@@ -91,6 +93,11 @@ tasks.preBuild {
     dependsOn(tasks.openApiGenerate)
 }
 
+//val test by tasks.getting(Test::class) {
+//    useJUnitPlatform { }
+//}
+
+
 
 
 dependencies {
@@ -102,13 +109,24 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
+    // test
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+//    testImplenentation( 'io.kotlintest:kotlintest:xxx')
+//    testImplementation 'io.kotest:kotest-runner-junit5:version'
+    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.1.11")
+
+
+    // android test
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+
 
     // api
     implementation(libs.moshi.kotlin)
@@ -118,6 +136,9 @@ dependencies {
     implementation(libs.converter.moshi)
     implementation(libs.converter.scalars)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.converter.kotlinx.serialization)
+
+
 
     //ViewModel
     implementation(libs.androidx.lifecycle.extensions)
@@ -146,5 +167,8 @@ dependencies {
     implementation(libs.circuit.foundation)
     implementation(libs.slack.circuitx.android)
 
+
+
+    // api UNUSED
     implementation(project(":api"))
 }
