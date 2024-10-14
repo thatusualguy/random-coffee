@@ -18,6 +18,16 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 interface AppModule {
 
+    @Binds
+    @Singleton
+    fun bindAuthRepository(impl: AuthApiRepository): AuthRepository
+
+    @Provides
+    @Singleton
+    fun provideAuthApi(api: ApiClient): AuthApi {
+        return api.createService(AuthApi::class.java)
+    }
+
     @Provides
     @Singleton
     fun provideApi(retrofit: ApiClient): ApiClient {
