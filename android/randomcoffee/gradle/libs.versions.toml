@@ -24,7 +24,7 @@ lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.2"
 composeBom = "2024.09.03"
 coil = "2.7.0"
-composeDestinations = "1.11.6"
+composeDestinations = "1.11.7"
 hiltNavigationCompose = "1.2.0"
 hiltVersion = "2.52"
 lifecycleExtensions = "2.2.0"
@@ -40,6 +40,8 @@ jetbrainsKotlinJvm = "2.0.20"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 animated-navigation-bar = { module = "com.exyte:animated-navigation-bar", version.ref = "animatedNavigationBar" }
+circuit-codegen = { module = "com.slack.circuit:circuit-codegen", version.ref = "circuitFoundation" }
+circuit-codegen-annotations = { module = "com.slack.circuit:circuit-codegen-annotations", version.ref = "circuitFoundation" }
 circuit-foundation = { module = "com.slack.circuit:circuit-foundation", version.ref = "circuitFoundation" }
 converter-kotlinx-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "converterKotlinxSerialization" }
 converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
@@ -90,7 +92,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "2.0.21" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 android-library = { id = "com.android.library", version.ref = "agp" }

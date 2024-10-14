@@ -7,11 +7,13 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dagger.hilt.migration.DisableInstallInCheck
 import dagger.multibindings.Multibinds
 import javax.inject.Singleton
 
 @Suppress("unused")
 @Module
+//@DisableInstallInCheck
 @InstallIn(SingletonComponent::class)
 abstract class CircuitModule {
     @Multibinds

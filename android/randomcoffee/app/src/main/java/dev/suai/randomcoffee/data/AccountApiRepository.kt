@@ -24,8 +24,11 @@ class AuthApiRepository @Inject constructor(private val api: AuthApi) : AuthRepo
             } else {
                 // TODO: Handle error appropriately
                 AuthResult.Error("Auth failed")
+
+
             }
         } catch (e: Exception) {
+            logger.info("Auth: network error: ${e.message}")
             // TODO: Handle network issues or unsuccessful responses
             AuthResult.NetworkError(e.message ?: " ")
         }
@@ -49,6 +52,7 @@ class AuthApiRepository @Inject constructor(private val api: AuthApi) : AuthRepo
                 RegisterResult.Error("Registration failed")
             }
         } catch (e: Exception) {
+            logger.info("Register: network error: ${e.message}")
             // TODO: Handle network issues or unsuccessful responses
             RegisterResult.NetworkError(e.message ?: " ")
         }

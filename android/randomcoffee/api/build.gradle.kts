@@ -1,6 +1,9 @@
+import org.jetbrains.kotlin.js.translate.context.Namer.kotlin
+
 plugins {
     id("java-library")
     id( "org.openapi.generator")
+    kotlin("jvm")
 }
 
 
@@ -14,9 +17,8 @@ openApiGenerate {
     validateSpec = false
     val path = File(File(projectDir.parent).parent).parent
     inputSpec = "$path\\RandomCoffee.openapi.yaml".replace("\\","/")
-//    inputSpec = "${projectDir.path}/RandomCoffee.openapi.yaml".replace("\\","/")
 
-    outputDir = "${buildDir.path}/openapi".replace("\\","/")
+    outputDir = "${layout.buildDirectory.asFile.get().toPath()}/openapi".replace("\\","/")
 
     additionalProperties = mapOf(
         "library" to "jvm-retrofit2",
@@ -33,8 +35,6 @@ tasks.build {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
 }
 
 
@@ -52,4 +52,12 @@ dependencies {
     implementation( libs.converter.moshi)
     implementation( libs.converter.scalars)
     testImplementation( libs.kotlintest.runner.junit5)
+    implementation(kotlin("stdlib-jdk8"))
 }
+//repositories {
+//    mavenCentral()
+//}
+//
+//kotlin {
+//    jvmToolchain(21)
+//}

@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 
 @Suppress("unused")
-@Module
+@Module(includes = [ApiModule::class, CircuitModule::class])
 @InstallIn(SingletonComponent::class)
 abstract class AppModule {
 
@@ -21,18 +21,5 @@ abstract class AppModule {
     @Singleton
     abstract fun bindAuthRepository(impl: AuthApiRepository): AuthRepository
 
-    companion object {
-        @Provides
-        @Singleton
-        fun provideAuthApi(api: ApiClient): AuthApi {
-            return api.createService(AuthApi::class.java)
-        }
 
-        @Provides
-        @Singleton
-        fun provideApi(retrofit: ApiClient): ApiClient {
-            System.setProperty(ApiClient.defaultBasePath, "example.com")
-            return ApiClient()
-        }
-    }
 }

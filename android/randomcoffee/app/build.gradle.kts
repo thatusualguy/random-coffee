@@ -74,14 +74,14 @@ openApiGenerate {
     val path = File(File(projectDir.parent).parent).parent
     inputSpec = "$path\\RandomCoffee.openapi.yaml".replace("\\", "/")
     ignoreFileOverride = "${projectDir.path}/openapi-generator-ignore"
-
 //    inputSpec = "${projectDir.path}/RandomCoffee.openapi.yaml".replace("\\","/")
 
     outputDir = "${buildDir.path}/openapi".replace("\\", "/")
 
     additionalProperties = mapOf(
         "library" to "jvm-retrofit2",
-        "serializationLibrary" to "kotlinx_serialization",
+//        "serializationLibrary" to "kotlinx_serialization",
+//        "serializationLibrary" to "gson",
         "useCoroutines" to "true"
     )
 
@@ -97,6 +97,9 @@ tasks.preBuild {
 //    useJUnitPlatform { }
 //}
 
+ksp {
+    arg("circuit.codegen.mode", "hilt") // or "kotlin_inject_anvil"
+}
 
 
 
@@ -116,9 +119,7 @@ dependencies {
     // test
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
-//    testImplenentation( 'io.kotlintest:kotlintest:xxx')
-//    testImplementation 'io.kotest:kotest-runner-junit5:version'
-    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.1.11")
+    testImplementation(libs.kotlintest.runner.junit5)
 
 
     // android test
@@ -149,6 +150,7 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
+
     // images
     implementation(libs.coil)
     implementation(libs.coil.compose)
@@ -166,6 +168,8 @@ dependencies {
     // circuit
     implementation(libs.circuit.foundation)
     implementation(libs.slack.circuitx.android)
+    api(libs.circuit.codegen.annotations)
+    ksp(libs.circuit.codegen)
 
 
 

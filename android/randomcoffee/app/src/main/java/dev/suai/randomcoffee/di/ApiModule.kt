@@ -12,6 +12,7 @@ import javax.inject.Singleton
 
 @Suppress("unused")
 @Module
+//@DisableInstallInCheck
 @InstallIn(SingletonComponent::class)
 object ApiModule {
     @Provides
@@ -35,7 +36,10 @@ object ApiModule {
     @Provides
     @Singleton
     fun provideApi(): ApiClient {
-        System.setProperty(ApiClient.defaultBasePath, "example.com")
+        System.setProperty(
+            "org.openapitools.client.baseUrl",
+            "https://e82456d4-3d3b-48d7-b683-f86b4dcfbc75.mock.pstmn.io"
+        )
         return ApiClient()
     }
 }
