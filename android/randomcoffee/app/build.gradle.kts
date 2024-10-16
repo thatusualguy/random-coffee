@@ -56,11 +56,11 @@ android {
     sourceSets {
         getByName("main") {
             kotlin {
+                @Suppress("DEPRECATION")
                 srcDir("${buildDir.path}/openapi")
             }
         }
     }
-
 }
 
 openApiValidate {
@@ -74,9 +74,7 @@ openApiGenerate {
     val path = File(File(projectDir.parent).parent).parent
     inputSpec = "$path\\RandomCoffee.openapi.yaml".replace("\\", "/")
     ignoreFileOverride = "${projectDir.path}/openapi-generator-ignore"
-//    inputSpec = "${projectDir.path}/RandomCoffee.openapi.yaml".replace("\\","/")
-
-    outputDir = "${buildDir.path}/openapi".replace("\\", "/")
+    outputDir = "${layout. buildDirectory.asFile.get().path}/openapi".replace("\\", "/")
 
     additionalProperties = mapOf(
         "library" to "jvm-retrofit2",
@@ -112,6 +110,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.extended)
+
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
