@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: RandomCoffee
-  version: 0.1.1
+  version: 0.2.0
 
 tags:
   - name: interests
@@ -43,6 +43,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserInterests'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     post:
       tags:
         - interests
@@ -66,7 +68,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserInterests'
-
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
   /schedule/{userId}:
     get:
       tags:
@@ -98,6 +101,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserSchedule'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     post:
       tags:
         - schedule
@@ -133,7 +138,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserSchedule'
-
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
   /user/{userId}:
     get:
       tags:
@@ -153,6 +159,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     patch:
       tags:
         - user
@@ -176,6 +184,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /register:
     post:
@@ -192,7 +202,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JwtResponse'
+                $ref: '#/components/schemas/AuthResponse'
 
   /login:
     post:
@@ -202,14 +212,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginDetails'
+              type: object
+              properties:
+                login:
+                  type: string
+                password:
+                  type: string
       responses:
         '200':
           description: Successful login
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JwtResponse'
+                $ref: '#/components/schemas/AuthResponse'
+
+  /refresh:
+    post:
+      tags:
+        - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+      responses:
+        '200':
+          description: Successful refresh
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /meet/history/{userId}:
     get:
@@ -242,6 +279,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HistoryMeets'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
 
   /meet/future/{userId}:
     get:
@@ -262,6 +302,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/FutureMeets'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
 
   /meet/approve/{userId}/{meetId}:
@@ -284,6 +326,14 @@ paths:
       responses:
         '200':
           description: Success
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+
+
+
+
+
 
 components:
   schemas:
@@ -341,16 +391,15 @@ components:
         slot:
           $ref: '#/components/schemas/TimeSlot'
 
-    LoginDetails:
+    AuthResponse:
       type: object
       properties:
-        login:
+        accessToken:
           type: string
-        password:
+          format: JWT
+        refreshToken:
           type: string
-
-    JwtResponse:
-      type: string
+          format: JWT
 
     UserRegister:
       type: object
@@ -416,13 +465,8 @@ components:
 
     TimeSlot:
       type: integer
-      oneOf:
-        - title: morning
-          const: 0
-        - title: day
-          const: 1
-        - title: evening
-          const: 2
+      format: int32
+      description: morning - 1, day - 2, evening - 4, bitmask
 
     UserSchedule:
       type: array
@@ -446,3 +490,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
