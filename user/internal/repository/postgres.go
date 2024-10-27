@@ -20,8 +20,7 @@ type PostgresImpl struct {
 }
 
 func (r PostgresImpl) CreateUser(ctx context.Context, user models.User) (int64, error) {
-	//TODO implement me
-	panic("implement me")
+	_, err := r.pool.Exec(ctx, `INSERT INTO users values `)
 }
 
 func (r PostgresImpl) GetUserByID(ctx context.Context, userID int64, fields []string) (models.User, error) {
