@@ -12,5 +12,5 @@ func main() {
 	pool := storage.MustConnect()
 	defer pool.Close()
 	log := logger.SetupLogger(cfg.Env)
-	repo := repository.NewRepository(pool, log)
+	_ = repository.NewRepository(pool, log)
 }
