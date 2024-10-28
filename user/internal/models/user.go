@@ -9,6 +9,6 @@ type User struct {
 }
 
 type Interest struct {
-	name string
-	id   int64
+	Name string
+	ID   int64
 }

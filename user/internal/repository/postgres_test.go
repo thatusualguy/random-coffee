@@ -54,3 +54,23 @@ func TestCreateUser(t *testing.T) {
 	query = `DELETE FROM users WHERE id=$1`
 	pool.Exec(context.Background(), query, id)
 }
+
+func TestGetInterests(t *testing.T) {
+	const LenOfInterests = 40
+	originalDir, _ := os.Getwd()
+	defer os.Chdir(originalDir)
+
+	// Меняем рабочую директорию на нужную
+	os.Chdir("D:\\Programming\\Go\\random-coffee\\user")
+	cfg := config.MustLoad()
+	pool := storage.MustConnect()
+	defer pool.Close()
+	log := logger.SetupLogger(cfg.Env)
+	repo := NewRepository(pool, log)
+	interests, err := repo.GetInterests(context.Background())
+	if err != nil {
+		assert.Fail(t, err.Error())
+	}
+	assert.NotEmpty(t, interests)
+	assert.Equal(t, LenOfInterests, len(interests))
+}
