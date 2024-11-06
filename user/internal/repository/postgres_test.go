@@ -2,11 +2,13 @@ package repository
 
 import (
 	"context"
+	"errors"
+	"fmt"
+	"github.com/jackc/pgx/v5"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"service.user/internal/models"
 	"service.user/pkg/config"
-	"service.user/pkg/logger"
 	"service.user/pkg/storage"
 	"testing"
 )
@@ -16,18 +18,18 @@ func TestCreateUser(t *testing.T) {
 	defer os.Chdir(originalDir)
 
 	// Меняем рабочую директорию на нужную
-	os.Chdir("D:\\Programming\\Go\\random-coffee\\user")
-	cfg := config.MustLoad()
+	os.Chdir("/Users/aleksejmetlusko/GolandProjects/random-coffee/user")
+	_ = config.MustLoad()
 	pool := storage.MustConnect()
 	defer pool.Close()
-	log := logger.SetupLogger(cfg.Env)
-	repo := NewRepository(pool, log)
+	repo := NewRepository(pool)
 	user := models.User{
 		Name:           "Alex",
-		Email:          "testemail@main.ru",
+		Email:          "test1email@main.ru",
 		HashedPassword: "somepass",
 		RefreshToken:   "sometoken",
 		Interests:      []int64{1, 2, 3},
+		AvailableDates: []int64{1730186776, 32840923840, 1283129830},
 	}
 	id, err := repo.CreateUser(context.Background(), user)
 	if err != nil {
@@ -51,26 +53,59 @@ func TestCreateUser(t *testing.T) {
 	assert.Equal(t, user, testUser)
 
 	//delete row
-	query = `DELETE FROM users WHERE id=$1`
-	pool.Exec(context.Background(), query, id)
+	queries := []string{
+		`DELETE FROM user_interests WHERE user_id=$1`,
+		`DELETE FROM available_dates WHERE user_id=$1`,
+		`DELETE FROM users WHERE id=$1`,
+	}
+	for _, query := range queries {
+		_, err = pool.Exec(context.Background(), query, id)
+		if err != nil {
+			assert.Fail(t, err.Error())
+		}
+	}
+
 }
 
 func TestGetInterests(t *testing.T) {
 	const LenOfInterests = 40
+	_ = config.MustLoad()
 	originalDir, _ := os.Getwd()
 	defer os.Chdir(originalDir)
 
 	// Меняем рабочую директорию на нужную
-	os.Chdir("D:\\Programming\\Go\\random-coffee\\user")
-	cfg := config.MustLoad()
+	os.Chdir("/Users/aleksejmetlusko/GolandProjects/random-coffee/user")
 	pool := storage.MustConnect()
 	defer pool.Close()
-	log := logger.SetupLogger(cfg.Env)
-	repo := NewRepository(pool, log)
+	repo := NewRepository(pool)
 	interests, err := repo.GetInterests(context.Background())
 	if err != nil {
 		assert.Fail(t, err.Error())
 	}
 	assert.NotEmpty(t, interests)
 	assert.Equal(t, LenOfInterests, len(interests))
+}
+
+func TestPostgresImpl_GetUserByID(t *testing.T) {
+	originalDir, _ := os.Getwd()
+	defer os.Chdir(originalDir)
+
+	// Меняем рабочую директорию на нужную
+	os.Chdir("/Users/aleksejmetlusko/GolandProjects/random-coffee/user")
+	_ = config.MustLoad()
+	pool := storage.MustConnect()
+	defer pool.Close()
+	repo := NewRepository(pool)
+	user, err := repo.GetUserByID(context.Background(), 1, models.UserFields{
+		Name:           true,
+		HashedPassword: true,
+		Interests:      true,
+	})
+
+	if err != nil {
+		if !errors.Is(err, pgx.ErrNoRows) {
+			assert.Fail(t, err.Error())
+		}
+	}
+	fmt.Println(user)
 }

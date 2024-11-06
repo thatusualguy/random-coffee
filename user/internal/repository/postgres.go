@@ -6,20 +6,18 @@ import (
 	"fmt"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"log/slog"
 	"service.user/internal/models"
 )
 
 type IRepository interface {
 	CreateUser(ctx context.Context, user models.User) (int64, error)
-	GetUserByID(ctx context.Context, userID int64, fields []string) (models.User, error)
+	GetUserByID(ctx context.Context, userID int64, fields models.UserFields) (models.User, error)
 	UpdateUserByID(ctx context.Context, userID int64, user models.User) bool
 	FindUserByEmail(ctx context.Context, email string) int64
 	GetInterests(ctx context.Context) ([]models.Interest, error)
 }
 
 type PostgresImpl struct {
-	log  *slog.Logger
 	pool *pgxpool.Pool
 }
 
@@ -62,11 +60,14 @@ func (r PostgresImpl) CreateUser(ctx context.Context, user models.User) (int64, 
 	//link interests
 	//init batch to optimize query
 	var batch pgx.Batch
-	query = `INSERT INTO user_interests(user_id, interest_id) VALUES ($1, $2)`
+	queryInterest := `INSERT INTO user_interests(user_id, interest_id) VALUES ($1, $2)`
+	queryAviableDate := `INSERT INTO available_dates(user_id, available_date) VALUES ($1, to_timestamp($2))`
 	for _, interest := range user.Interests {
-		batch.Queue(query, userID, interest)
+		batch.Queue(queryInterest, userID, interest)
 	}
-
+	for _, date := range user.AvailableDates {
+		batch.Queue(queryAviableDate, userID, date)
+	}
 	//send batch
 	br := tx.SendBatch(ctx, &batch)
 	_, err = br.Exec()
@@ -80,9 +81,18 @@ func (r PostgresImpl) CreateUser(ctx context.Context, user models.User) (int64, 
 	return userID, nil
 }
 
-func (r PostgresImpl) GetUserByID(ctx context.Context, userID int64, fields []string) (models.User, error) {
-	//TODO implement me
-	panic("implement me")
+func (r PostgresImpl) GetUserByID(ctx context.Context, userID int64, fields models.UserFields) (models.User, error) {
+	const op = `repository.PostgresImpl.GetUserByID`
+	var user models.User
+
+	//return dest that helps to scan into user
+	query, dest := buildQuery(fields, &user)
+	row := r.pool.QueryRow(ctx, query, userID)
+	err := row.Scan(dest...)
+	if err != nil {
+		return models.User{}, err
+	}
+	return user, nil
 }
 
 func (r PostgresImpl) UpdateUserByID(ctx context.Context, userID int64, user models.User) bool {
@@ -95,6 +105,6 @@ func (r PostgresImpl) FindUserByEmail(ctx context.Context, email string) int64 {
 	panic("implement me")
 }
 
-func NewRepository(pool *pgxpool.Pool, log *slog.Logger) IRepository {
-	return PostgresImpl{pool: pool, log: log}
+func NewRepository(pool *pgxpool.Pool) IRepository {
+	return PostgresImpl{pool: pool}
 }
