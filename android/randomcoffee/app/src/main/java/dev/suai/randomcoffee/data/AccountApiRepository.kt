@@ -1,36 +1,41 @@
 package dev.suai.randomcoffee.data
 
+import com.auth0.android.jwt.JWT
 import dev.suai.randomcoffee.domain.AuthRepository
+import dev.suai.randomcoffee.domain.JwtTokenManager
 import dev.suai.randomcoffee.domain.entity.AuthResult
 import dev.suai.randomcoffee.domain.entity.RegisterResult
 import dev.suai.randomcoffee.schema.api.AuthApi
-import dev.suai.randomcoffee.schema.model.LoginDetails
+import dev.suai.randomcoffee.schema.model.LoginPostRequest
 import dev.suai.randomcoffee.schema.model.UserRegister
 import java.util.logging.Logger
 import javax.inject.Inject
 
 
-class AuthApiRepository @Inject constructor(private val api: AuthApi) : AuthRepository {
+class AuthApiRepository @Inject constructor(
+    private val api: AuthApi,
+    private val jwtTokenManager: JwtTokenManager
+) : AuthRepository {
     private val logger = Logger.getLogger(AuthApiRepository::class.java.name)
 
     override suspend fun authenticate(login: String, password: String): AuthResult {
-        val loginDetails = LoginDetails(login, password)
+        val loginDetails = LoginPostRequest(login, password)
         logger.info("Authenticating user: $login")
 
-        return try {
+        try {
             val response = api.loginPost(loginDetails)
             if (response.isSuccessful && response.body() != null) {
-                AuthResult.Success(response.body()!!)
+                jwtTokenManager.saveAccessJwt(JWT(response.body()!!.accessToken!!))
+                jwtTokenManager.saveRefreshJwt(JWT(response.body()!!.refreshToken!!))
+                return AuthResult.Success
             } else {
                 // TODO: Handle error appropriately
-                AuthResult.Error("Auth failed")
-
-
+                return AuthResult.Error("Auth failed:")
             }
         } catch (e: Exception) {
             logger.info("Auth: network error: ${e.message}")
             // TODO: Handle network issues or unsuccessful responses
-            AuthResult.NetworkError(e.message ?: " ")
+            return AuthResult.NetworkError(e.message ?: " ")
         }
     }
 
@@ -46,7 +51,9 @@ class AuthApiRepository @Inject constructor(private val api: AuthApi) : AuthRepo
         return try {
             val response = api.registerPost(userRegister)
             if (response.isSuccessful && response.body() != null) {
-                RegisterResult.Success(response.body()!!)
+                jwtTokenManager.saveAccessJwt(JWT(response.body()!!.accessToken!!))
+                jwtTokenManager.saveRefreshJwt(JWT(response.body()!!.refreshToken!!))
+                RegisterResult.Success
             } else {
                 // TODO: Handle error appropriately
                 RegisterResult.Error("Registration failed")
