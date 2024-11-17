@@ -14,16 +14,11 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.components.SingletonComponent
-import dev.suai.randomcoffee.di.AppModule
-import dev.suai.randomcoffee.di.CircuitModule
 import dev.suai.randomcoffee.domain.AuthRepository
 import dev.suai.randomcoffee.domain.entity.AuthResult
 import dev.suai.randomcoffee.ui.auth.register.RegisterScreen
-import dev.suai.randomcoffee.ui.meets.MeetScreen
-import kotlinx.coroutines.CoroutineScope
+import dev.suai.randomcoffee.ui.menu.MainCombinationScreen
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class LoginPresenter
@@ -39,8 +34,9 @@ constructor(
         var login by rememberRetained { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
 
+        var loading by remember { mutableStateOf(false) }
 
-        return LoginScreen.State(login, password) { event ->
+        return LoginScreen.State(login, password, loading) { event ->
             when (event) {
                 LoginScreen.Event.ForgotPasswordClicked -> {}
                 is LoginScreen.Event.LoginChanged -> login = event.login
@@ -48,17 +44,17 @@ constructor(
 
                     scope.launch(Dispatchers.IO) {
                         val authResult = authRepository.authenticate(login, password)
-
+                        loading = true
                         when (authResult) {
-                            is AuthResult.Error -> TODO()
-                            is AuthResult.NetworkError -> TODO()
-                            is AuthResult.Success -> navigator.goTo(MeetScreen)
-                            AuthResult.WrongLogin -> TODO()
-                            AuthResult.WrongPassword -> TODO()
+                            is AuthResult.Error -> TODO("Error")
+                            is AuthResult.NetworkError -> TODO("Network")
+                            is AuthResult.Success -> navigator.goTo(MainCombinationScreen)
+                            AuthResult.WrongLogin -> TODO("WA")
+                            AuthResult.WrongPassword -> TODO("WP")
                         }
 
                     }.invokeOnCompletion {
-
+                        loading = false
                     }
 
 

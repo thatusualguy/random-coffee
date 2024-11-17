@@ -1,21 +1,25 @@
 package dev.suai.randomcoffee.data
 
 import androidx.datastore.core.DataStore
-import androidx.datastore.core.Preferences.Key
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.auth0.android.jwt.JWT
 import dev.suai.randomcoffee.domain.JwtTokenManager
 import kotlinx.coroutines.flow.firstOrNull
 import java.util.Date
-import java.util.prefs.Preferences
 import javax.inject.Inject
+
+val ACCESS_JWT_KEY_NAME = "access_jwt"
+val REFRESH_JWT_KEY_NAME = "refresh_jwt"
+
 
 class JwtTokenDataStore @Inject constructor(private val dataStore: DataStore<Preferences>) :
     JwtTokenManager {
 
+
     companion object {
-        val ACCESS_JWT_KEY = stringPreferencesKey("access_jwt")
-        val REFRESH_JWT_KEY = stringPreferencesKey("refresh_jwt")
+        val ACCESS_JWT_KEY = stringPreferencesKey(ACCESS_JWT_KEY_NAME)
+        val REFRESH_JWT_KEY = stringPreferencesKey(REFRESH_JWT_KEY_NAME)
     }
 
     override suspend fun saveAccessJwt(token: JWT) {
@@ -61,7 +65,7 @@ class JwtTokenDataStore @Inject constructor(private val dataStore: DataStore<Pre
         }
     }
 
-    private suspend fun get(key: Key<String>): JWT? {
+    private suspend fun get(key: Preferences.Key<String>): JWT? {
         val saved = dataStore.data.firstOrNull()?.get(key)
         return if (!saved.isNullOrBlank())
             JWT(saved)
@@ -69,7 +73,7 @@ class JwtTokenDataStore @Inject constructor(private val dataStore: DataStore<Pre
             null
     }
 
-    private suspend fun save(key: Key<String>, token: JWT) {
+    private suspend fun save(key: Preferences.Key<String>, token: JWT) {
         dataStore.updateData {
             it.toMutablePreferences().apply {
                 putAll(key to token.toString())

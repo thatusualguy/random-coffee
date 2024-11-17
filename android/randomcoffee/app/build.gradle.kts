@@ -74,7 +74,7 @@ openApiGenerate {
     val path = File(File(projectDir.parent).parent).parent
     inputSpec = "$path\\RandomCoffee.openapi.yaml".replace("\\", "/")
     ignoreFileOverride = "${projectDir.path}/openapi-generator-ignore"
-    outputDir = "${layout. buildDirectory.asFile.get().path}/openapi".replace("\\", "/")
+    outputDir = "${layout.buildDirectory.asFile.get().path}/openapi".replace("\\", "/")
 
     additionalProperties = mapOf(
         "library" to "jvm-retrofit2",
@@ -111,10 +111,20 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons.extended)
-
-
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // datastore
+    implementation(libs.androidx.datastore.preferences.core)
+    implementation(libs.androidx.datastore.core)
+    implementation(libs.androidx.datastore.preferences)
+//    implementation(libs.androidx.datastore.core.android)
+//    implementation(libs.androidx.datastore.preferences.core.jvm)
+
+
+    // jwt
+    implementation(libs.jwtdecode)
+
 
     // test
     testImplementation(libs.junit)
@@ -138,7 +148,6 @@ dependencies {
     implementation(libs.converter.scalars)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.converter.kotlinx.serialization)
-
 
 
     //ViewModel
@@ -170,7 +179,6 @@ dependencies {
     implementation(libs.slack.circuitx.android)
     api(libs.circuit.codegen.annotations)
     ksp(libs.circuit.codegen)
-
 
 
     // api UNUSED
