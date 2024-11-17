@@ -3,6 +3,7 @@ package jwt
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 	"time"
@@ -35,4 +36,17 @@ func HashToken(token string) (string, error) {
 		return "", err
 	}
 	return string(hash), nil
+}
+
+func VerifyToken(tokenString string, secret string) error {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(secret), nil
+	})
+	if err != nil {
+		return err
+	}
+	if !token.Valid {
+		return fmt.Errorf("token is invalid")
+	}
+	return nil
 }

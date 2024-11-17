@@ -6,6 +6,7 @@ CREATE TABLE users(
                       email VARCHAR(255) NOT NULL UNIQUE,
                       hashed_password VARCHAR(255) not null,
                       refresh_token VARCHAR(255),
+                      tg_handle VARCHAR(255),
                       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
                       updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP);
 
@@ -32,12 +33,12 @@ CREATE INDEX idx_available_dates_user_id ON available_dates(user_id);
 
 -- +goose Down
 -- +goose StatementBegin
-DROP INDEX IF EXISTS idx_users_email;
-DROP INDEX IF EXISTS idx_user_interests_user_id;
-DROP INDEX IF EXISTS idx_user_interests_interest_id;
-DROP INDEX IF EXISTS idx_available_dates_user_id;
-DROP TABLE IF EXISTS available_dates;
-DROP TABLE IF EXISTS user_interests;
-DROP TABLE IF EXISTS interests;
-DROP TABLE IF EXISTS users;
+-- DROP INDEX IF EXISTS idx_users_email;
+-- DROP INDEX IF EXISTS idx_user_interests_user_id;
+-- DROP INDEX IF EXISTS idx_user_interests_interest_id;
+-- DROP INDEX IF EXISTS idx_available_dates_user_id;
+-- DROP TABLE IF EXISTS available_dates;
+-- DROP TABLE IF EXISTS user_interests;
+-- DROP TABLE IF EXISTS interests;
+-- DROP TABLE IF EXISTS users;
 -- +goose StatementEnd

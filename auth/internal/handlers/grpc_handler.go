@@ -45,6 +45,8 @@ func (a *AuthService) Register(ctx context.Context, req *auth.RegisterRequest) (
 			Interests:      req.Interests,
 			HashedPassword: passHash,
 			RefreshToken:   refreshToken,
+			TgHandle:       req.TgHandle,
+			AvailableDates: req.AvailableDates,
 		},
 	})
 	if err != nil {
@@ -73,7 +75,9 @@ func (a *AuthService) Login(ctx context.Context, req *auth.LoginRequest) (*auth.
 	}
 	hash, err := a.UserService.GetUserByID(context.Background(), &user.GetUserRequest{
 		UserId: resp.UserId,
-		Fields: []string{"hashed_password"},
+		Fields: &user.UserFields{
+			HashedPassword: true,
+		},
 	})
 	if err != nil {
 		return nil, err
@@ -97,7 +101,9 @@ func (a *AuthService) Login(ctx context.Context, req *auth.LoginRequest) (*auth.
 func (a *AuthService) RefreshToken(ctx context.Context, req *auth.RefreshTokenRequest) (*auth.RefreshTokenResponse, error) {
 	resp, err := a.UserService.GetUserByID(context.Background(), &user.GetUserRequest{
 		UserId: req.UserId,
-		Fields: []string{"refresh_token"},
+		Fields: &user.UserFields{
+			RefreshToken: true,
+		},
 	})
 	if err != nil {
 		return nil, err
@@ -115,7 +121,10 @@ func (a *AuthService) RefreshToken(ctx context.Context, req *auth.RefreshTokenRe
 	}
 	status, err := a.UserService.UpdateUserByID(context.Background(), &user.UpdateUserRequest{
 		UserId: req.UserId,
-		Fields: &user.User{
+		Fields: &user.UserFields{
+			RefreshToken: true,
+		},
+		Data: &user.User{
 			RefreshToken: refreshToken,
 		},
 	})
@@ -125,6 +134,19 @@ func (a *AuthService) RefreshToken(ctx context.Context, req *auth.RefreshTokenRe
 	return &auth.RefreshTokenResponse{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
+	}, nil
+}
+
+func (a *AuthService) VerifyToken(ctx context.Context, req *auth.VerifyTokenRequest) (*auth.VerifyTokenResponse, error) {
+	const op = "auth.Service.VerifyToken"
+	err := jwt.VerifyToken(req.Token, a.cfg.Secret)
+	if err != nil {
+		return &auth.VerifyTokenResponse{
+			Valid: false,
+		}, nil
+	}
+	return &auth.VerifyTokenResponse{
+		Valid: true,
 	}, nil
 }
 

@@ -7,6 +7,7 @@ type User struct {
 	AvailableDates []int64
 	RefreshToken   string
 	HashedPassword string `db:"hashed_password"`
+	TgHandle       string `db:"tg_handle"`
 }
 
 type Interest struct {
@@ -21,4 +22,5 @@ type UserFields struct {
 	RefreshToken   bool
 	HashedPassword bool
 	AvailableDates bool
+	TgHandle       bool
 }

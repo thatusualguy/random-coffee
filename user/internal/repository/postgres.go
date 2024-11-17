@@ -12,7 +12,7 @@ import (
 type IRepository interface {
 	CreateUser(ctx context.Context, user models.User) (int64, error)
 	GetUserByID(ctx context.Context, userID int64, fields models.UserFields) (models.User, error)
-	UpdateUserByID(ctx context.Context, userID int64, user models.User) bool
+	UpdateUserByID(ctx context.Context, userID int64, fields models.UserFields, user models.User) error
 	FindUserByEmail(ctx context.Context, email string) int64
 	GetInterests(ctx context.Context) ([]models.Interest, error)
 }
@@ -52,8 +52,8 @@ func (r PostgresImpl) CreateUser(ctx context.Context, user models.User) (int64, 
 		return -1, errors.New(fmt.Sprintf("failed to start tx. Err: %s op:%s", err.Error(), op))
 	}
 	defer tx.Rollback(ctx)
-	query := `INSERT INTO users (name, email, hashed_password, refresh_token)  values ($1, $2, $3, $4) returning id`
-	err = tx.QueryRow(ctx, query, user.Name, user.Email, user.HashedPassword, user.RefreshToken).Scan(&userID)
+	query := `INSERT INTO users (name, email, hashed_password, refresh_token, tg_handle)  values ($1, $2, $3, $4, $5) returning id`
+	err = tx.QueryRow(ctx, query, user.Name, user.Email, user.HashedPassword, user.RefreshToken, user.TgHandle).Scan(&userID)
 	if err != nil {
 		return -1, errors.New(fmt.Sprintf("failed to create user. Err: %s op:%s", err.Error(), op))
 	}
@@ -86,7 +86,7 @@ func (r PostgresImpl) GetUserByID(ctx context.Context, userID int64, fields mode
 	var user models.User
 
 	//return dest that helps to scan into user
-	query, dest := buildQuery(fields, &user)
+	query, dest := buildGetQuery(fields, &user)
 	row := r.pool.QueryRow(ctx, query, userID)
 	err := row.Scan(dest...)
 	if err != nil {
@@ -95,14 +95,26 @@ func (r PostgresImpl) GetUserByID(ctx context.Context, userID int64, fields mode
 	return user, nil
 }
 
-func (r PostgresImpl) UpdateUserByID(ctx context.Context, userID int64, user models.User) bool {
-	//TODO implement me
-	panic("implement me")
+func (r PostgresImpl) UpdateUserByID(ctx context.Context, userID int64, fields models.UserFields, user models.User) error {
+	const op = `repository.PostgresImpl.UpdateUserByID`
+	query, values := buildUpdateQuery(fields, user, userID)
+	_, err := r.pool.Exec(ctx, query, values...)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r PostgresImpl) FindUserByEmail(ctx context.Context, email string) int64 {
-	//TODO implement me
-	panic("implement me")
+	const op = `repository.PostgresImpl.FindUserByEmail`
+	var userID int64
+	query := `SELECT id FROM users WHERE email = $1`
+	row := r.pool.QueryRow(ctx, query, email)
+	err := row.Scan(&userID)
+	if err != nil {
+		return -1
+	}
+	return userID
 }
 
 func NewRepository(pool *pgxpool.Pool) IRepository {
