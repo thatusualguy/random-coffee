@@ -12,12 +12,12 @@ import dev.suai.randomcoffee.R
 
 
 val geologicaFontFamily = FontFamily(
-    Font(R.font.geologica_light, FontWeight.Light),
-    Font(R.font.geologica_semibold, FontWeight.SemiBold),
-    Font(R.font.geologica_regular, FontWeight.Normal),
-    Font(R.font.geologica_cursive_regular, FontWeight.Normal, FontStyle.Italic),
-    Font(R.font.geologica_medium, FontWeight.Medium),
-    Font(R.font.geologica_bold, FontWeight.Bold)
+    Font(R.font.geologica_auto_light, FontWeight.Light),
+    Font(R.font.geologica_auto_semibold, FontWeight.SemiBold),
+    Font(R.font.geologica_auto_regular, FontWeight.Normal),
+    Font(R.font.geologica_auto_regular, FontWeight.Normal),
+    Font(R.font.geologica_auto_medium, FontWeight.Medium),
+    Font(R.font.geologica_auto_bold, FontWeight.Bold)
 )
 
 val vdsFontFamily = FontFamily(
