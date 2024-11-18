@@ -18,17 +18,17 @@ val navItems: List<NavBarScreen.NavItem> = listOf(
     NavBarScreen.NavItem(
         action = NavBarScreen.Event.NavigateToInterests,
         text = "Интересы",
-        icon = R.drawable.outline_interests_24
+        icon = R.drawable.heart
     ),
     NavBarScreen.NavItem(
         action = NavBarScreen.Event.NavigateToMeet,
         text = "Встречи",
-        icon = R.drawable.outline_people_24
+        icon = R.drawable.mug
     ),
     NavBarScreen.NavItem(
         action = NavBarScreen.Event.NavigateToProfile,
         text = "Профиль",
-        icon = R.drawable.outline_account_circle_24
+        icon = R.drawable.person
     ),
 )
 

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -48,6 +49,7 @@ fun NavBar(
         ),
         selectedIndex = state.selectedIndex,
         ballAnimation = Parabolic(tween(500, easing = LinearOutSlowInEasing)),
+        barColor = MaterialTheme.colorScheme.surfaceVariant
     ) {
 
         for ((idx, item) in state.items.withIndex()) {
