@@ -1,4 +1,4 @@
-package dev.suai.randomcoffee.data
+package dev.suai.randomcoffee.data.auth
 
 import com.auth0.android.jwt.JWT
 import dev.suai.randomcoffee.domain.AuthRepository

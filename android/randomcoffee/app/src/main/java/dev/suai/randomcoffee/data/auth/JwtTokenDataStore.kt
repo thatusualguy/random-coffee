@@ -1,4 +1,4 @@
-package dev.suai.randomcoffee.data
+package dev.suai.randomcoffee.data.auth
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

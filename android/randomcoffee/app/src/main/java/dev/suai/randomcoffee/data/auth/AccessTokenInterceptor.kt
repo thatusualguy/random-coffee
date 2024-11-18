@@ -1,4 +1,4 @@
-package dev.suai.randomcoffee.data
+package dev.suai.randomcoffee.data.auth
 
 import dev.suai.randomcoffee.domain.JwtTokenManager
 import kotlinx.coroutines.runBlocking

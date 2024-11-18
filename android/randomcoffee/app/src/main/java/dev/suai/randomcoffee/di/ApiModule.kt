@@ -6,14 +6,12 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.suai.randomcoffee.data.JwtTokenDataStore
+import dev.suai.randomcoffee.data.auth.JwtTokenDataStore
 import dev.suai.randomcoffee.domain.JwtTokenManager
 import dev.suai.randomcoffee.schema.api.AuthApi
 import dev.suai.randomcoffee.schema.api.InterestsApi
 import dev.suai.randomcoffee.schema.api.UserApi
 import org.openapitools.client.infrastructure.ApiClient
-import javax.inject.Named
-import javax.inject.Qualifier
 import javax.inject.Singleton
 
 
