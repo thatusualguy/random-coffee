@@ -13,12 +13,13 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import dev.suai.randomcoffee.data.AuthApiRepository
+import dev.suai.randomcoffee.data.auth.AuthApiRepository
+import dev.suai.randomcoffee.data.interests.InterestsApiRepository
 import dev.suai.randomcoffee.domain.AuthRepository
+import dev.suai.randomcoffee.domain.InterestsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import javax.inject.Named
 import javax.inject.Singleton
 
 @Suppress("unused")
@@ -29,6 +30,10 @@ abstract class AppModule {
     @Binds
     @Singleton
     abstract fun bindAuthRepository(impl: AuthApiRepository): AuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindInterestsRepository(impl: InterestsApiRepository): InterestsRepository
 
     companion object {
         @Provides
