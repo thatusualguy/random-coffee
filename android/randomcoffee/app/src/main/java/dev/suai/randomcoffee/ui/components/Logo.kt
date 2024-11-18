@@ -26,8 +26,8 @@ fun AppName(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp),
+            .fillMaxWidth(),
+//            .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(-25.dp)
     ) {
