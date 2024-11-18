@@ -28,14 +28,18 @@ fun RandomizedText(
     LaunchedEffect(text) {
         scope.launch {
             while (true) {
-                val randomIndex = Random.nextInt(replaceWith.size)
-                val randomChar = replaceWith[randomIndex]
 
                 val sb = StringBuilder(text)
-                var replaceIndex = Random.nextInt(text.length)
-                if (sb[replaceIndex].isWhitespace())
-                    replaceIndex++
-                sb.setCharAt(replaceIndex, randomChar)
+
+                for (i in 1..replacements) {
+                    val randomChar = replaceWith[Random.nextInt(replaceWith.size)]
+                    var replaceIndex = Random.nextInt(text.length)
+
+                    if (sb[replaceIndex].isWhitespace())
+                        replaceIndex++
+
+                    sb.setCharAt(replaceIndex, randomChar)
+                }
 
                 mangledText = sb.toString()
                 delay(timeoutMs.toLong())
