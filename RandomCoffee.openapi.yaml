@@ -257,12 +257,6 @@ paths:
         - meet
       security:
         - bearerAuth: [ ]
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: integer
       responses:
         '200':
           description: Success
@@ -407,9 +401,15 @@ components:
         $ref: '#/components/schemas/Interest'
 
     Interests:
-      type: array
-      items:
-        $ref: '#/components/schemas/InterestGroup'
+      type: object
+      properties:
+        allInterests:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestGroup'
+        userInterests:
+          $ref: '#/components/schemas/UserInterests'
+
 
     ScheduleSlot:
       type: object
