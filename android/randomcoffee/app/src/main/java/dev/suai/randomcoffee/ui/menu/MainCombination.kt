@@ -17,6 +17,7 @@ import dagger.hilt.components.SingletonComponent
 import dev.suai.randomcoffee.ui.globalCircuit
 import dev.suai.randomcoffee.ui.meets.MeetScreen
 import dev.suai.randomcoffee.ui.menu.navbar.NavBarScreen
+import dev.suai.randomcoffee.ui.profile.ProfileScreen
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -47,7 +48,6 @@ fun MainCombination(modifier: Modifier) {
 @CircuitInject(MainCombinationScreen::class, SingletonComponent::class)
 @Composable
 fun mainCombinationPresenter(navigator: Navigator): MainCombinationScreen.State {
-    navigator.resetRoot(MainCombinationScreen)
-
+//    navigator.resetRoot(MainCombinationScreen)
     return MainCombinationScreen.State
 }
