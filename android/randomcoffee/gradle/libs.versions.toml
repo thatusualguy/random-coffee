@@ -21,11 +21,11 @@ jetbrainsKotlinJvm = "2.0.20"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 jwtdecode = "2.0.2"
-kotlin = "2.0.20"
+kotlin = "2.0.21"
 kotlinReflect = "2.0.20"
 kotlinStdlibJdk8 = "2.0.20"
 kotlintestRunnerJunit5 = "3.4.2"
-ksp = "2.0.20-1.0.25"
+ksp = "2.0.21-1.0.25"
 lifecycleExtensions = "2.2.0"
 lifecycleRuntimeKtx = "2.8.6"
 lifecycleViewmodelKtx = "2.8.6"
@@ -104,7 +104,7 @@ yakov = { module = "com.chrisjenx.yakcov:library", version.ref = "yakov" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version = "2.0.21" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
