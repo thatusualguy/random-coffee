@@ -5,6 +5,6 @@ import dev.suai.randomcoffee.domain.entity.InterestsResult
 
 interface InterestsRepository {
     suspend fun getInterests(): InterestsResult
-    fun toggleInterest(interests:Interest)
+    fun toggleInterest(interest:Interest)
     suspend fun saveInterests()
 }
