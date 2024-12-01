@@ -25,15 +25,20 @@ def has_intersection(user1, user2):
     """
     Проверяет пересечение дней предпочтений между двумя пользователями.
     """
-    return not user1['preferred_days'].isdisjoint(user2['preferred_days'])
+    return not set(user1['preferred_days']).isdisjoint(set(user2['preferred_days']))
 
 
-def cluster_users(n_clusters=4):
+
+def cluster_users(n_clusters=4, new_user=None):
     """
     Загружает пользователей из базы, рассчитывает кластеры и сохраняет результаты.
     """
     # Получение данных пользователей из базы данных
     users_data = get_all_users_from_db()
+
+    # Добавление нового пользователя, если передан
+    if new_user:
+        users_data.append(new_user)
 
     # Генерация списка уникальных интересов
     unique_interests = list(set(interest for user in users_data for interest in user["interests"]))
@@ -75,7 +80,6 @@ def cluster_users(n_clusters=4):
         print(f"Кластер {cluster_id}: Пользователи {user_ids}")
 
     return clusters
-
 
 def jaccard_coefficient(set1, set2):
     """

@@ -118,13 +118,29 @@ def save_clusters_to_db(users_data, clusters):
     try:
         for user, cluster in zip(users_data, clusters):
             user_id = user['id']
-            # Преобразование типа cluster в int
             cluster_id = int(cluster)  # Преобразование в стандартный тип int
+
+            # Преобразуем множественные данные в формат списка, если это множества
+            if isinstance(user['interests'], set):
+                interests = list(user['interests'])  # Преобразуем множество в список
+            else:
+                interests = user['interests']
+
+            if isinstance(user['preferred_days'], set):
+                preferred_days = list(user['preferred_days'])  # Преобразуем множество в список
+            else:
+                preferred_days = user['preferred_days']
+
+            # Сохранение в базу данных с ensure_ascii=False
             cursor.execute("""
-                INSERT INTO user_clusters_info (user_id, cluster_id)
-                VALUES (%s, %s)
-                ON CONFLICT (user_id) DO UPDATE SET cluster_id = EXCLUDED.cluster_id;
-            """, (user_id, cluster_id))
+                INSERT INTO user_clusters_info (user_id, cluster_id, interests, preferred_days)
+                VALUES (%s, %s, %s, %s)
+                ON CONFLICT (user_id) DO UPDATE 
+                SET cluster_id = EXCLUDED.cluster_id,
+                    interests = EXCLUDED.interests,
+                    preferred_days = EXCLUDED.preferred_days;
+            """, (user_id, cluster_id, json.dumps(interests, ensure_ascii=False), json.dumps(preferred_days, ensure_ascii=False)))
+
         conn.commit()
     except Exception as e:
         print(f"Ошибка при сохранении кластеров: {e}")
