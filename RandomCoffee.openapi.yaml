@@ -23,6 +23,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Interests'
+    post:
+      tags:
+        - interests
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInterests'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInterests'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /interests/{userId}:
     get:
@@ -45,43 +64,14 @@ paths:
                 $ref: '#/components/schemas/UserInterests'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-    post:
-      tags:
-        - interests
-      security:
-        - bearerAuth: [ ]
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserInterests'
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserInterests'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-  /schedule/{userId}:
+
+  /schedule:
     get:
       tags:
         - schedule
       security:
         - bearerAuth: [ ]
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
         - name: start_date
           in: query
           required: false
@@ -109,11 +99,6 @@ paths:
       security:
         - bearerAuth: [ ]
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
         - name: start_date
           in: query
           required: false
@@ -140,18 +125,12 @@ paths:
                 $ref: '#/components/schemas/UserSchedule'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-  /user/{userId}:
+  /user:
     get:
       tags:
         - user
       security:
         - bearerAuth: [ ]
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: Success
@@ -166,12 +145,6 @@ paths:
         - user
       security:
         - bearerAuth: [ ]
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -248,18 +221,13 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
 
-  /meet/history/{userId}:
+  /meet/history:
     get:
       tags:
         - meet
       security:
         - bearerAuth: [ ]
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: string
         - name: start_date
           in: query
           required: false
@@ -283,18 +251,12 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
 
 
-  /meet/future/{userId}:
+  /meet/future:
     get:
       tags:
         - meet
       security:
         - bearerAuth: [ ]
-      parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: integer
       responses:
         '200':
           description: Success
@@ -306,18 +268,13 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
 
 
-  /meet/approve/{userId}/{meetId}:
+  /meet/approve/{meetId}:
     post:
       tags:
         - meet
       security:
         - bearerAuth: [ ]
       parameters:
-        - name: userId
-          in: path
-          required: true
-          schema:
-            type: integer
         - name: meetId
           in: path
           required: true
@@ -328,12 +285,6 @@ paths:
           description: Success
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-
-
-
-
-
-
 
 components:
   schemas:
@@ -450,9 +401,15 @@ components:
         $ref: '#/components/schemas/Interest'
 
     Interests:
-      type: array
-      items:
-        $ref: '#/components/schemas/InterestGroup'
+      type: object
+      properties:
+        allInterests:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestGroup'
+        userInterests:
+          $ref: '#/components/schemas/UserInterests'
+
 
     ScheduleSlot:
       type: object
