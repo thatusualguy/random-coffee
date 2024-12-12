@@ -63,14 +63,10 @@ android {
     }
 }
 
-openApiValidate {
-    val path = File(File(projectDir.parent).parent).parent
-    inputSpec = "$path\\RandomCoffee.openapi.yaml".replace("\\", "/")
-}
 
 openApiGenerate {
     generatorName = "kotlin"
-    validateSpec = false
+    validateSpec = true
     val path = File(File(projectDir.parent).parent).parent
     inputSpec = "$path\\RandomCoffee.openapi.yaml".replace("\\", "/")
     ignoreFileOverride = "${projectDir.path}/openapi-generator-ignore"

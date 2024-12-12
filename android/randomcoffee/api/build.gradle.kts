@@ -34,9 +34,6 @@ tasks.build {
     dependsOn(tasks.openApiGenerate)
 }
 
-java {
-}
-
 
 //test {
 //    useJUnitPlatform()
