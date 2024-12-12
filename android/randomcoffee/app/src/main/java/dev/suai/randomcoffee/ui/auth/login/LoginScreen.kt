@@ -1,5 +1,6 @@
 package dev.suai.randomcoffee.ui.auth.login
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,8 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.slack.circuit.codegen.annotations.CircuitInject
@@ -19,8 +22,8 @@ import com.slack.circuit.runtime.screen.Screen
 import dagger.hilt.components.SingletonComponent
 import dev.suai.randomcoffee.ui.components.AppName
 import dev.suai.randomcoffee.ui.components.BasicButton
-import dev.suai.randomcoffee.ui.components.Header
 import dev.suai.randomcoffee.ui.components.EmailInput
+import dev.suai.randomcoffee.ui.components.Header
 import dev.suai.randomcoffee.ui.components.PasswordInput
 import dev.suai.randomcoffee.ui.components.StyledTextButton
 import dev.suai.randomcoffee.ui.theme.RandomCoffeeTheme
@@ -49,7 +52,16 @@ data object LoginScreen : Screen {
 @Composable
 fun Login(state: LoginScreen.State, modifier: Modifier = Modifier) {
 
-    Column {
+    val context = LocalContext.current
+
+    LaunchedEffect(state.error) {
+        if (state.error != null) {
+            Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    Column(modifier = modifier) {
         Header()
 
         Column(
@@ -90,12 +102,14 @@ fun Login(state: LoginScreen.State, modifier: Modifier = Modifier) {
                     "Войти",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(50.dp)
-                ) {
-                    state.eventSink(
-                        LoginScreen.Event.LoginClicked(state.login, state.password)
-                    )
-                }
+                        .height(50.dp),
+                    enabled = !state.loading,
+                    onClick = {
+                        state.eventSink(
+                            LoginScreen.Event.LoginClicked(state.login, state.password)
+                        )
+                    },
+                )
             }
         }
     }

@@ -1,16 +1,16 @@
 package dev.suai.randomcoffee
 
-import dev.suai.randomcoffee.data.AuthApiRepository
-import dev.suai.randomcoffee.domain.entity.AuthResult
-import dev.suai.randomcoffee.schema.api.AuthApi
-import io.mockk.coEvery
-import io.mockk.mockk
-import junit.framework.TestCase.assertEquals
-import junit.framework.TestCase.assertTrue
-import kotlinx.coroutines.runBlocking
-import okhttp3.ResponseBody
-import org.junit.Test
-import retrofit2.Response
+//import dev.suai.randomcoffee.data.AuthApiRepository
+//import dev.suai.randomcoffee.domain.entity.AuthResult
+//import dev.suai.randomcoffee.schema.api.AuthApi
+//import io.mockk.coEvery
+//import io.mockk.mockk
+//import junit.framework.TestCase.assertEquals
+//import junit.framework.TestCase.assertTrue
+//import kotlinx.coroutines.runBlocking
+//import okhttp3.ResponseBody
+//import org.junit.Test
+//import retrofit2.Response
 
 //class AuthRepositoryImplTest {
 //    // Authentication with incorrect credentials returns AuthResult.Error

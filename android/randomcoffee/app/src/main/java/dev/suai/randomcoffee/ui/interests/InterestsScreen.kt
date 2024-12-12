@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.InputChip
@@ -20,11 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
+import dagger.hilt.components.SingletonComponent
 import dev.suai.randomcoffee.domain.entity.Interest
 import dev.suai.randomcoffee.domain.entity.InterestGroup
+import dev.suai.randomcoffee.ui.components.Header
 import dev.suai.randomcoffee.ui.theme.RandomCoffeeTheme
 import kotlinx.parcelize.Parcelize
 
@@ -48,41 +53,41 @@ data object InterestsScreen : Screen {
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalLayoutApi::class)
+@CircuitInject(InterestsScreen::class, SingletonComponent::class)
 @Composable
 fun Interests(
-    state: InterestsScreen.State,
-    modifier: Modifier = Modifier
+    state: InterestsScreen.State, modifier: Modifier = Modifier
 ) {
-    Scaffold(floatingActionButton =
-    {
-        AnimatedVisibility(
-            visible = state.hasChanges,
-            enter = expandIn { IntSize(width = 1, height = 1) } + fadeIn()
-        ) {
+    Scaffold(floatingActionButton = {
+        AnimatedVisibility(visible = state.hasChanges,
+            enter = expandIn { IntSize(width = 1, height = 1) } + fadeIn()) {
             FloatingActionButton(
                 onClick = { state.eventSink(InterestsScreen.Event.ApplyClicked) },
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
                 Text(
-                    "Сохранить",
-                    modifier = Modifier.padding(6.dp)
+                    "Сохранить", modifier = Modifier.padding(6.dp)
                 )
             }
         }
     }) { _ ->
 
-        Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(30.dp)) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(30.dp)
+        ) {
+            Spacer(Modifier.height(8.dp))
             state.allInterests.forEach { group ->
                 Column() {
                     Text(
-                        group.name,
-                        style = MaterialTheme.typography.headlineLarge
+                        group.name, style = MaterialTheme.typography.headlineLarge
                     )
                     FlowRow(
                         horizontalArrangement = Arrangement.spacedBy(7.dp),
                         verticalArrangement = Arrangement.spacedBy(7.dp),
-                        modifier = Modifier
-                            .padding(7.dp)
+                        modifier = Modifier.padding(7.dp)
                     ) {
                         group.interests.forEach { interest ->
                             val isSelected = interest in state.selectedInterests
@@ -97,8 +102,7 @@ fun Interests(
                                 },
                                 label = {
                                     Text(
-                                        interest.name,
-                                        modifier = Modifier
+                                        interest.name, modifier = Modifier
                                             //                            .background(color = Color.Gray, shape = CircleShape)
                                             .padding(vertical = 3.dp, horizontal = 5.dp)
                                     )
@@ -119,15 +123,13 @@ private fun PreviewInterests() {
     val state = InterestsScreen.State(
         allInterests = listOf(
             InterestGroup(
-                "Технологии",
-                listOf(
+                "Технологии", listOf(
                     Interest("Веб", 1),
                     Interest("БД", 2),
                 )
             ),
             InterestGroup(
-                "Спорт",
-                listOf(
+                "Спорт", listOf(
                     Interest("Веб", 2),
                     Interest("БД", 3),
                 )
@@ -140,6 +142,9 @@ private fun PreviewInterests() {
     )
 
     RandomCoffeeTheme {
-        Interests(state)
+        Column {
+            Header()
+            Interests(state)
+        }
     }
 }

@@ -1,6 +1,6 @@
 [versions]
 activityCompose = "1.9.3"
-agp = "8.7.2"
+agp = "8.7.3"
 animatedNavigationBar = "1.0.0"
 appcompat = "1.7.0"
 circuitFoundation = "0.24.0"

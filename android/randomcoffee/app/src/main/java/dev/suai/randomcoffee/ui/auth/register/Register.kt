@@ -10,8 +10,6 @@ import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import dagger.hilt.components.SingletonComponent
-import dev.suai.randomcoffee.di.AppModule
-import dev.suai.randomcoffee.di.CircuitModule
 import dev.suai.randomcoffee.ui.auth.login.LoginScreen
 
 @CircuitInject(RegisterScreen::class, SingletonComponent::class)

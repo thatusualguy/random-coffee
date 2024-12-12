@@ -28,11 +28,12 @@ private val LightColorScheme = lightColorScheme(
     tertiary = BrownLight,
 
     secondaryContainer = Dunno,
+    onSecondaryContainer = BorderBrowm,
 
     outline = BorderBrowm,
 
     surfaceVariant = DarkBrown,
-    onSurfaceVariant = Color.White,
+//    onSurfaceVariant = Color.White,
 )
 
 @Composable

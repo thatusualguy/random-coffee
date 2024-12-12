@@ -15,7 +15,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.suai.randomcoffee.data.auth.AuthApiRepository
 import dev.suai.randomcoffee.data.interests.InterestsApiRepository
+import dev.suai.randomcoffee.data.meets.HistoryApiRepository
 import dev.suai.randomcoffee.domain.AuthRepository
+import dev.suai.randomcoffee.domain.HistoryRepository
 import dev.suai.randomcoffee.domain.InterestsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +36,10 @@ abstract class AppModule {
     @Binds
     @Singleton
     abstract fun bindInterestsRepository(impl: InterestsApiRepository): InterestsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindHistoryRepository(impl:HistoryApiRepository): HistoryRepository
 
     companion object {
         @Provides

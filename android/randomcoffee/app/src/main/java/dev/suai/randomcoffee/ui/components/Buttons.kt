@@ -20,6 +20,7 @@ import dev.suai.randomcoffee.ui.theme.RandomCoffeeTheme
 fun BasicButton(
     text: String,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
 
@@ -32,6 +33,7 @@ fun BasicButton(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary
         ),
+        enabled = enabled
     ) {
         Text(
             text.lowercase(),
@@ -78,8 +80,8 @@ fun ButtonPreview() {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            BasicButton("Регистрация") { }
-            BasicButton("Войти", Modifier.fillMaxWidth()) { }
+            BasicButton("Регистрация", onClick = { })
+            BasicButton("Войти", Modifier.fillMaxWidth(), onClick = { })
         }
     }
 }
