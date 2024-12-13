@@ -98,19 +98,6 @@ paths:
         - schedule
       security:
         - bearerAuth: [ ]
-      parameters:
-        - name: start_date
-          in: query
-          required: false
-          schema:
-            type: string
-            format: date
-        - name: end_date
-          in: query
-          required: false
-          schema:
-            type: string
-            format: date
       requestBody:
         content:
           application/json:
