@@ -250,10 +250,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/FutureMeets'
+                $ref: '#/components/schemas/FutureMeet'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-
 
   /meet/approve/{meetId}:
     post:
@@ -291,18 +290,6 @@ components:
         secondTgHandle:
           type: string
 
-    FutureMeets:
-      type: object
-      properties:
-        notApproved:
-          type: array
-          items:
-            $ref: '#/components/schemas/HistoryMeet'
-        approved:
-          type: array
-          items:
-            $ref: '#/components/schemas/FutureMeet'
-
     FutureMeet:
       type: object
       properties:
@@ -317,17 +304,8 @@ components:
           type: string
         secondTg:
           type: string
-
-    FutureMeetNotApproved:
-      type: object
-      properties:
-        id:
-          type: integer
-        date:
-          type: string
-          format: date
-        slot:
-          $ref: '#/components/schemas/TimeSlot'
+        approved:
+          type: boolean
 
     AuthResponse:
       type: object
