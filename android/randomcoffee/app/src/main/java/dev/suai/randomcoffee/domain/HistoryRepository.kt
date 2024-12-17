@@ -1,7 +1,7 @@
 package dev.suai.randomcoffee.domain
 
-import dev.suai.randomcoffee.domain.entity.HistoryMeet
+import dev.suai.randomcoffee.domain.entity.Meet
 
 interface HistoryRepository {
-    suspend fun getHistory(): List<HistoryMeet>
+    suspend fun getHistory(): List<Meet>
 }

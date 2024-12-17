@@ -39,8 +39,11 @@ abstract class AppModule {
 
     @Binds
     @Singleton
-    abstract fun bindInterestsRepository(impl: InterestsApiRepository): InterestsRepository
     abstract fun bindInterestsRepository(impl: InterestsMockRepository): InterestsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindHistoryRepository(impl:HistoryMockRepository): HistoryRepository
 
     @Binds
     @Singleton
