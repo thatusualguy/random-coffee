@@ -14,6 +14,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dev.suai.randomcoffee.data.auth.AuthApiRepository
+import dev.suai.randomcoffee.data.auth.AuthMockRepository
+import dev.suai.randomcoffee.data.calendar.CalendarMockRepository
 import dev.suai.randomcoffee.data.interests.InterestsApiRepository
 import dev.suai.randomcoffee.data.meets.HistoryApiRepository
 import dev.suai.randomcoffee.domain.AuthRepository
@@ -31,7 +33,7 @@ abstract class AppModule {
 
     @Binds
     @Singleton
-    abstract fun bindAuthRepository(impl: AuthApiRepository): AuthRepository
+    abstract fun bindAuthRepository(impl: AuthMockRepository): AuthRepository
 
     @Binds
     @Singleton

@@ -23,6 +23,7 @@ import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import dagger.hilt.components.SingletonComponent
+import dev.suai.randomcoffee.ui.auth.login.LoginScreen
 import dev.suai.randomcoffee.ui.auth.register.RegisterScreen.Event.HaveAccountClicked
 import dev.suai.randomcoffee.ui.auth.register.RegisterScreen.Event.LoginChanged
 import dev.suai.randomcoffee.ui.auth.register.RegisterScreen.Event.NameChanged
@@ -45,10 +46,10 @@ data object RegisterScreen : Screen {
         val password: String,
         val tgHandle: String,
         val name: String,
+        val loading: Boolean,
         val eula: Boolean = false,
         val error: String?,
         val eventSink: (Event) -> Unit,
-        val loading: Boolean
     ) : CircuitUiState
 
     sealed class Event : CircuitUiEvent {
@@ -57,6 +58,7 @@ data object RegisterScreen : Screen {
         data class TgHandleChanged(val tgHandle: String) : Event()
         data class NameChanged(val name: String) : Event()
         data class EulaChanged(val state: Boolean) : Event()
+        data object ErrorShown : Event()
 
         data class HaveAccountClicked(
             val login: String, val password: String
@@ -78,6 +80,7 @@ fun Register(state: RegisterScreen.State, modifier: Modifier = Modifier) {
     LaunchedEffect(state.error) {
         if (state.error != null) {
             Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
+            state.eventSink(RegisterScreen.Event.ErrorShown)
         }
     }
 
@@ -94,7 +97,7 @@ fun Register(state: RegisterScreen.State, modifier: Modifier = Modifier) {
         ) {
             AppName(Modifier.fillMaxWidth())
 
-            Column() {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 EmailInput(
                     value = state.login,
                     modifier = Modifier.fillMaxWidth(),
@@ -126,7 +129,6 @@ fun Register(state: RegisterScreen.State, modifier: Modifier = Modifier) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-
                     Checkbox(
                         checked = state.eula,
                         onCheckedChange = { state.eventSink(RegisterScreen.Event.EulaChanged(it)) }
@@ -136,7 +138,6 @@ fun Register(state: RegisterScreen.State, modifier: Modifier = Modifier) {
                         "Согласен с условиями использования"
                     )
                 }
-
             }
 
 
