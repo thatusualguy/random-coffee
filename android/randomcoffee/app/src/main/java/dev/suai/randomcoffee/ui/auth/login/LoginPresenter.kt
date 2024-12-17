@@ -33,10 +33,15 @@ constructor(
 
         var login by rememberRetained { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
-
+        var error by remember { mutableStateOf<String?>(null) }
         var loading by remember { mutableStateOf(false) }
 
-        return LoginScreen.State(login, password, loading) { event ->
+        return LoginScreen.State(
+            login = login,
+            password = password,
+            loading = loading,
+            error = error
+        ) { event ->
             when (event) {
                 LoginScreen.Event.ForgotPasswordClicked -> {}
                 is LoginScreen.Event.LoginChanged -> login = event.login
@@ -46,11 +51,12 @@ constructor(
                         val authResult = authRepository.authenticate(login, password)
                         loading = true
                         when (authResult) {
-                            is AuthResult.Error -> TODO("Error")
-                            is AuthResult.NetworkError -> TODO("Network")
+//                            is AuthResult.Error -> TODO("Error")
+//                            is AuthResult.NetworkError -> TODO("Network")
                             is AuthResult.Success -> navigator.goTo(MainCombinationScreen)
-                            AuthResult.WrongLogin -> TODO("WA")
-                            AuthResult.WrongPassword -> TODO("WP")
+//                            AuthResult.WrongLogin -> TODO("WA")
+//                            AuthResult.WrongPassword -> TODO("WP")
+                            else -> navigator.goTo(MainCombinationScreen)
                         }
 
                     }.invokeOnCompletion {
@@ -61,6 +67,7 @@ constructor(
                 }
                 LoginScreen.Event.NoAccountClicked -> navigator.goTo(RegisterScreen)
                 is LoginScreen.Event.PasswordChanged -> password = event.password
+                LoginScreen.Event.ErrorShown -> error = null
             }
         }
     }

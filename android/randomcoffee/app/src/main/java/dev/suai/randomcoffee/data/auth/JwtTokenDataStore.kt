@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.auth0.android.jwt.JWT
 import dev.suai.randomcoffee.domain.JwtTokenManager
 import kotlinx.coroutines.flow.firstOrNull
+import org.openapitools.client.infrastructure.ApiClient
 import java.util.Date
 import javax.inject.Inject
 
@@ -13,7 +14,7 @@ val ACCESS_JWT_KEY_NAME = "access_jwt"
 val REFRESH_JWT_KEY_NAME = "refresh_jwt"
 
 
-class JwtTokenDataStore @Inject constructor(private val dataStore: DataStore<Preferences>) :
+class JwtTokenDataStore @Inject constructor(private val dataStore: DataStore<Preferences>, private val apiClient: ApiClient) :
     JwtTokenManager {
 
 
@@ -24,6 +25,7 @@ class JwtTokenDataStore @Inject constructor(private val dataStore: DataStore<Pre
 
     override suspend fun saveAccessJwt(token: JWT) {
         save(ACCESS_JWT_KEY, token)
+        apiClient.setBearerToken(token.toString())
     }
 
     override suspend fun saveRefreshJwt(token: JWT) {

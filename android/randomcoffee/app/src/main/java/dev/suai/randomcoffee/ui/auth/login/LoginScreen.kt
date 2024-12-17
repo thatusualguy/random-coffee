@@ -43,6 +43,7 @@ data object LoginScreen : Screen {
         data class LoginChanged(val login: String) : Event()
         data class PasswordChanged(val password: String) : Event()
         data class LoginClicked(val login: String, val password: String) : Event()
+        data object ErrorShown : Event()
         data object ForgotPasswordClicked : Event()
         data object NoAccountClicked : Event()
     }
@@ -57,6 +58,7 @@ fun Login(state: LoginScreen.State, modifier: Modifier = Modifier) {
     LaunchedEffect(state.error) {
         if (state.error != null) {
             Toast.makeText(context, state.error, Toast.LENGTH_SHORT).show()
+            state.eventSink(LoginScreen.Event.ErrorShown)
         }
     }
 
