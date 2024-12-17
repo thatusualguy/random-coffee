@@ -176,6 +176,10 @@ dependencies {
     api(libs.circuit.codegen.annotations)
     ksp(libs.circuit.codegen)
 
+    //calendar
+    implementation(libs.composecalendar)
+    implementation("io.github.boguszpawlowski.composecalendar:kotlinx-datetime:1.3.0")
+
 
     // api UNUSED
     implementation(project(":api"))

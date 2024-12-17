@@ -41,7 +41,11 @@ abstract class AppModule {
 
     @Binds
     @Singleton
-    abstract fun bindHistoryRepository(impl:HistoryApiRepository): HistoryRepository
+    abstract fun bindFutureRepository(impl:FutureMeetMockRepository): FutureMeetRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCalendarRepository(impl:CalendarMockRepository): CalendarRepository
 
     companion object {
         @Provides

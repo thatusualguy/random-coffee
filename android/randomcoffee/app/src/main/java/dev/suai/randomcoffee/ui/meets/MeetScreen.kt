@@ -1,15 +1,23 @@
 package dev.suai.randomcoffee.ui.meets
 
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.codegen.annotations.CircuitInject
+import com.slack.circuit.foundation.CircuitCompositionLocals
+import com.slack.circuit.foundation.NavigableCircuitContent
+import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
 import dagger.hilt.components.SingletonComponent
+import dev.suai.randomcoffee.ui.globalCircuit
+import dev.suai.randomcoffee.ui.meets.calendar.MeetsCalendarScreen
+import dev.suai.randomcoffee.ui.meets.future.FutureMeetsScreen
 import dev.suai.randomcoffee.ui.theme.RandomCoffeeTheme
 import kotlinx.parcelize.Parcelize
 
@@ -29,12 +37,20 @@ data object MeetScreen : Screen {
 @Composable
 fun Meet(state: MeetScreen.State, modifier: Modifier = Modifier) {
 
-//    Scaffold(
-////        bottomBar = MyBottomBar()
-//    )
+    val upperStack = rememberSaveableBackStack(root = MeetsCalendarScreen)
+    val upperNavigator = rememberCircuitNavigator(upperStack)
 
-        Text("meet")
+    val lowerStack = rememberSaveableBackStack(root = FutureMeetsScreen)
+    val lowerNavigator = rememberCircuitNavigator(lowerStack)
 
+    Column(modifier.fillMaxWidth()) {
+        globalCircuit?.let {
+            CircuitCompositionLocals(it) {
+                NavigableCircuitContent(upperNavigator, upperStack)
+                NavigableCircuitContent(lowerNavigator, lowerStack)
+            }
+        }
+    }
 }
 
 
@@ -42,7 +58,7 @@ fun Meet(state: MeetScreen.State, modifier: Modifier = Modifier) {
 @Preview
 private fun MeetPreview() {
 
-    val state = MeetScreen.State({})
+    val state = MeetScreen.State {}
 
     RandomCoffeeTheme {
         Meet(state)
