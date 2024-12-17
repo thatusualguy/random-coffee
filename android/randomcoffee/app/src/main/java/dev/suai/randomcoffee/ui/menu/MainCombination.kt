@@ -14,6 +14,7 @@ import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.screen.Screen
 import dagger.hilt.components.SingletonComponent
+import dev.suai.randomcoffee.ui.components.Header
 import dev.suai.randomcoffee.ui.globalCircuit
 import dev.suai.randomcoffee.ui.meets.MeetScreen
 import dev.suai.randomcoffee.ui.menu.navbar.NavBarScreen
@@ -35,6 +36,8 @@ fun MainCombination(modifier: Modifier) {
     val navBarStack = rememberSaveableBackStack(root = NavBarScreen)
 
     Column(Modifier.fillMaxSize()) {
+        Header()
+
         globalCircuit?.let {
             CircuitCompositionLocals(it) {
                 NavigableCircuitContent(mainNavigator, mainBackStack)
