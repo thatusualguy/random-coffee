@@ -12,6 +12,7 @@ import dagger.hilt.components.SingletonComponent
 import dev.suai.randomcoffee.R
 import dev.suai.randomcoffee.ui.interests.InterestsScreen
 import dev.suai.randomcoffee.ui.meets.MeetScreen
+import dev.suai.randomcoffee.ui.meets.history.HistoryScreen
 import dev.suai.randomcoffee.ui.profile.ProfileScreen
 
 val navItems: List<NavBarScreen.NavItem> = listOf(
@@ -54,7 +55,7 @@ fun navBarPresenter(navigator: Navigator): NavBarScreen.State {
         when (event) {
             NavBarScreen.Event.NavigateToInterests -> navigator.goTo(InterestsScreen)
             NavBarScreen.Event.NavigateToMeet -> navigator.goTo(MeetScreen)
-            NavBarScreen.Event.NavigateToProfile -> navigator.goTo(ProfileScreen)
+            NavBarScreen.Event.NavigateToProfile -> navigator.goTo(HistoryScreen)
         }
     }
 }
