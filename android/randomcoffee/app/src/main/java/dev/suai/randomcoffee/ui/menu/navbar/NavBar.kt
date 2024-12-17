@@ -25,6 +25,8 @@ import com.exyte.animatednavbar.animation.indendshape.shapeCornerRadius
 import com.exyte.animatednavbar.items.dropletbutton.DropletButton
 import com.slack.circuit.codegen.annotations.CircuitInject
 import dagger.hilt.components.SingletonComponent
+import dev.suai.randomcoffee.ui.theme.Orange
+import dev.suai.randomcoffee.ui.theme.OrangeLight
 import dev.suai.randomcoffee.ui.theme.RandomCoffeeTheme
 
 
@@ -42,7 +44,7 @@ fun NavBar(
         cornerRadius = shapeCornerRadius(50.dp),
         indentAnimation = Height(
             indentWidth = 56.dp,
-            indentHeight = 15.dp,
+            indentHeight = 13.dp,
             animationSpec = tween(
                 1000,
                 easing = { OvershootInterpolator().getInterpolation(it) })
@@ -57,6 +59,7 @@ fun NavBar(
             DropletButton(
                 isSelected = idx == state.selectedIndex,
                 onClick = { state.eventSink(item.action) },
+                dropletColor = Orange,
                 icon = item.icon,
                 animationSpec = tween(durationMillis = 500, easing = LinearEasing),
                 modifier = Modifier.fillMaxSize(),
@@ -69,8 +72,6 @@ fun NavBar(
 @Preview
 @Composable
 private fun NavBarPreview() {
-
-
     var selectedIndex by remember { mutableIntStateOf(0) }
 
     val state = NavBarScreen.State(
