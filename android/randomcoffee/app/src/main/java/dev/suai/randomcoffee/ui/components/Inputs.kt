@@ -144,7 +144,6 @@ fun StringInput(
         },
         leadingIcon = leadingIcon,
         isError = isError,
-        supportingText = supportingText,
         keyboardOptions = keyboardOptions,
         trailingIcon = trailingIcon,
         visualTransformation = visualTransformation,

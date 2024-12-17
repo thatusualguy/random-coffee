@@ -20,7 +20,10 @@ import dev.suai.randomcoffee.data.interests.InterestsApiRepository
 import dev.suai.randomcoffee.data.interests.InterestsMockRepository
 import dev.suai.randomcoffee.data.meets.FutureMeetMockRepository
 import dev.suai.randomcoffee.data.meets.HistoryApiRepository
+import dev.suai.randomcoffee.data.meets.HistoryMockRepository
 import dev.suai.randomcoffee.domain.AuthRepository
+import dev.suai.randomcoffee.domain.CalendarRepository
+import dev.suai.randomcoffee.domain.FutureMeetRepository
 import dev.suai.randomcoffee.domain.HistoryRepository
 import dev.suai.randomcoffee.domain.InterestsRepository
 import kotlinx.coroutines.CoroutineScope

@@ -29,12 +29,10 @@ class AuthApiRepository @Inject constructor(
                 jwtTokenManager.saveRefreshJwt(JWT(response.body()!!.refreshToken!!))
                 return AuthResult.Success
             } else {
-                // TODO: Handle error appropriately
                 return AuthResult.Error("Auth failed:")
             }
         } catch (e: Exception) {
             logger.info("Auth: network error: ${e.message}")
-            // TODO: Handle network issues or unsuccessful responses
             return AuthResult.NetworkError(e.message ?: " ")
         }
     }

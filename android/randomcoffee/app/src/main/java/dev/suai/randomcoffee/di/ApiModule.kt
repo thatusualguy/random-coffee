@@ -10,12 +10,11 @@ import dev.suai.randomcoffee.data.auth.JwtTokenDataStore
 import dev.suai.randomcoffee.domain.JwtTokenManager
 import dev.suai.randomcoffee.schema.api.AuthApi
 import dev.suai.randomcoffee.schema.api.InterestsApi
+import dev.suai.randomcoffee.schema.api.MeetApi
+import dev.suai.randomcoffee.schema.api.ScheduleApi
 import dev.suai.randomcoffee.schema.api.UserApi
 import org.openapitools.client.infrastructure.ApiClient
 import javax.inject.Singleton
-
-
-
 
 
 @Suppress("unused")
@@ -37,14 +36,29 @@ object ApiModule {
 
     @Provides
     @Singleton
+    fun provideScheduleApi(@AuthenticatedClient api: ApiClient): ScheduleApi {
+        return api.createService(ScheduleApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMeetApi(@AuthenticatedClient api: ApiClient): MeetApi {
+        return api.createService(MeetApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideInterestsApi(@AuthenticatedClient api: ApiClient): InterestsApi {
         return api.createService(InterestsApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideJwtTokenManager(@AuthDataStore dataStore: DataStore<Preferences>): JwtTokenManager {
-        return JwtTokenDataStore(dataStore)
+    fun provideJwtTokenManager(
+        @AuthDataStore dataStore: DataStore<Preferences>,
+        @AuthenticatedClient api: ApiClient
+    ): JwtTokenManager {
+        return JwtTokenDataStore(dataStore, api)
     }
 
     @Provides

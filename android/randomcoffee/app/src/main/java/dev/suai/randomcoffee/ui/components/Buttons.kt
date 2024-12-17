@@ -39,7 +39,8 @@ fun BasicButton(
             text.lowercase(),
 //            lineHeight = 10.sp,
             modifier = Modifier.padding(0.dp),
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.labelMedium,
+            maxLines = 1
         )
     }
 }
