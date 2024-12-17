@@ -8,14 +8,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -58,58 +56,68 @@ data object InterestsScreen : Screen {
 fun Interests(
     state: InterestsScreen.State, modifier: Modifier = Modifier
 ) {
-    Scaffold(floatingActionButton = {
-        AnimatedVisibility(visible = state.hasChanges,
-            enter = expandIn { IntSize(width = 1, height = 1) } + fadeIn()) {
-            FloatingActionButton(
-                onClick = { state.eventSink(InterestsScreen.Event.ApplyClicked) },
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Text(
-                    "Сохранить", modifier = Modifier.padding(6.dp)
-                )
-            }
-        }
-    }) { _ ->
+    Column(verticalArrangement = Arrangement.SpaceBetween) {
+        Column {
 
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(30.dp)
-        ) {
-            Spacer(Modifier.height(8.dp))
-            state.allInterests.forEach { group ->
-                Column() {
-                    Text(
-                        group.name, style = MaterialTheme.typography.headlineLarge
-                    )
-                    FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(7.dp),
-                        verticalArrangement = Arrangement.spacedBy(7.dp),
-                        modifier = Modifier.padding(7.dp)
-                    ) {
-                        group.interests.forEach { interest ->
-                            val isSelected = interest in state.selectedInterests
-                            InputChip(
-                                isSelected,
-                                onClick = {
-                                    state.eventSink(
-                                        InterestsScreen.Event.InterestClicked(
-                                            interest
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(30.dp)
+            ) {
+
+
+                state.allInterests.forEach { group ->
+                    Column() {
+                        Text(
+                            group.name, style = MaterialTheme.typography.headlineLarge
+                        )
+                        FlowRow(
+                            horizontalArrangement = Arrangement.spacedBy(7.dp),
+                            verticalArrangement = Arrangement.spacedBy(7.dp),
+                            modifier = Modifier.padding(7.dp)
+                        ) {
+                            group.interests.forEach { interest ->
+                                val isSelected = interest in state.selectedInterests
+                                InputChip(
+                                    isSelected,
+                                    onClick = {
+                                        state.eventSink(
+                                            InterestsScreen.Event.InterestClicked(
+                                                interest
+                                            )
                                         )
-                                    )
-                                },
-                                label = {
-                                    Text(
-                                        interest.name, modifier = Modifier
-                                            //                            .background(color = Color.Gray, shape = CircleShape)
-                                            .padding(vertical = 3.dp, horizontal = 5.dp)
-                                    )
-                                },
-                            )
+                                    },
+                                    label = {
+                                        Text(
+                                            interest.name, modifier = Modifier
+                                                //                            .background(color = Color.Gray, shape = CircleShape)
+                                                .padding(vertical = 3.dp, horizontal = 5.dp)
+                                        )
+                                    },
+                                )
+                            }
                         }
                     }
+                }
+            }
+        }
+
+//        Spacer(modifier = Modifier.weight(1f))
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp), horizontalArrangement = Arrangement.End
+        ) {
+            AnimatedVisibility(visible = state.hasChanges,
+                enter = expandIn { IntSize(width = 1, height = 1) } + fadeIn()) {
+                FloatingActionButton(
+                    onClick = { state.eventSink(InterestsScreen.Event.ApplyClicked) },
+                    containerColor = MaterialTheme.colorScheme.primary
+                ) {
+                    Text(
+                        "Сохранить", modifier = Modifier.padding(6.dp)
+                    )
                 }
             }
         }
@@ -143,8 +151,8 @@ private fun PreviewInterests() {
 
     RandomCoffeeTheme {
         Column {
-            Header()
             Interests(state)
+            Text("meme")
         }
     }
 }

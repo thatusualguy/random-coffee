@@ -7,4 +7,5 @@ interface InterestsRepository {
     suspend fun getInterests(): InterestsResult
     fun toggleInterest(interest:Interest)
     suspend fun saveInterests()
+    fun getSelected(): List<Interest>
 }

@@ -1,6 +1,7 @@
 package dev.suai.randomcoffee.data.interests
 
 import dev.suai.randomcoffee.domain.InterestsRepository
+import dev.suai.randomcoffee.domain.entity.Interest
 import dev.suai.randomcoffee.domain.entity.InterestsResult
 import dev.suai.randomcoffee.schema.api.InterestsApi
 import javax.inject.Inject
@@ -62,6 +63,10 @@ class InterestsApiRepository @Inject constructor(
             )
         } catch (_: Exception) {
         }
+    }
+
+    override fun getSelected(): List<Interest> {
+        return selectedInterests.toList()
     }
 
 

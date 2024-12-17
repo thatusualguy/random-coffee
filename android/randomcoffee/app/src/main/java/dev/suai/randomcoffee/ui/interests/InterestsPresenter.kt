@@ -45,7 +45,7 @@ constructor(
             }
         }
 
-        val hasChanges = selectedInterests != startSelectedInterests
+        var hasChanges = selectedInterests != startSelectedInterests
 
         return InterestsScreen.State(
             allInterests,
@@ -54,16 +54,25 @@ constructor(
             hasChanges
         ) { event ->
             when (event) {
-                InterestsScreen.Event.ApplyClicked ->
+                InterestsScreen.Event.ApplyClicked -> {
                     scope.launch(Dispatchers.IO) {
                         interestsRepository.saveInterests()
-                    }.invokeOnCompletion {
-                        startSelectedInterests = selectedInterests
+                        val res = interestsRepository.getInterests()
+                        allInterests = res.allInterests
+                        startSelectedInterests = res.selectedInterests.toSet()
+                        selectedInterests = startSelectedInterests
                     }
+                    hasChanges = false
+                }
 
-                is InterestsScreen.Event.InterestClicked -> interestsRepository.toggleInterest(event.interest)
+                is InterestsScreen.Event.InterestClicked -> {
+                    interestsRepository.toggleInterest(event.interest)
+                    selectedInterests = interestsRepository.getSelected().toSet()
+                    hasChanges = true
+                }
             }
         }
+
     }
 
     @CircuitInject(InterestsScreen::class, SingletonComponent::class)

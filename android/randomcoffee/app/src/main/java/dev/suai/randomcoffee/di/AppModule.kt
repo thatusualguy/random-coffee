@@ -17,6 +17,8 @@ import dev.suai.randomcoffee.data.auth.AuthApiRepository
 import dev.suai.randomcoffee.data.auth.AuthMockRepository
 import dev.suai.randomcoffee.data.calendar.CalendarMockRepository
 import dev.suai.randomcoffee.data.interests.InterestsApiRepository
+import dev.suai.randomcoffee.data.interests.InterestsMockRepository
+import dev.suai.randomcoffee.data.meets.FutureMeetMockRepository
 import dev.suai.randomcoffee.data.meets.HistoryApiRepository
 import dev.suai.randomcoffee.domain.AuthRepository
 import dev.suai.randomcoffee.domain.HistoryRepository
@@ -38,6 +40,7 @@ abstract class AppModule {
     @Binds
     @Singleton
     abstract fun bindInterestsRepository(impl: InterestsApiRepository): InterestsRepository
+    abstract fun bindInterestsRepository(impl: InterestsMockRepository): InterestsRepository
 
     @Binds
     @Singleton
